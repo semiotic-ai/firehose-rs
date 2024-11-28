@@ -25,3 +25,5 @@ pub use firehose_v2::SingleBlockResponse;
 
 /// Work with the Firehose v2 Stream API.
 pub use firehose_v2::stream_client::StreamClient;
+
+pub use crate::firehose_v2::request::{FromResponse, HasNumberOrSlot};
