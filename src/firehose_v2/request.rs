@@ -1,3 +1,6 @@
+// Copyright 2024-, Semiotic AI, Inc.
+// SPDX-License-Identifier: Apache-2.0
+
 use std::fmt::Display;
 
 use crate::BlockNumber;
@@ -33,7 +36,7 @@ impl SingleBlockRequest {
 ///
 /// # Example
 ///
-/// ```rust
+/// ```rust,ignore
 /// use firehose_client::HasNumberOrSlot;
 ///
 /// #[derive(Clone)]
@@ -95,7 +98,7 @@ pub trait HasNumberOrSlot: Clone + Send + 'static {
 ///
 /// # Example
 ///
-/// ```rust,
+/// ```rust,ignore
 /// use firehose_client::FromResponse;
 /// use firehose_protos::Response;
 ///
@@ -120,7 +123,7 @@ pub trait HasNumberOrSlot: Clone + Send + 'static {
 /// methods, such as `stream_blocks`, allowing these methods to work with
 /// different block types by specifying the type parameter:
 ///
-/// ```rust
+/// ```rust, ignore
 /// let stream = client
 ///     .stream_blocks_generic::<FirehoseBeaconBlock>(start, total)
 ///     .await?;

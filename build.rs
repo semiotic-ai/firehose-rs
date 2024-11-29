@@ -1,3 +1,6 @@
+// Copyright 2024-, Semiotic AI, Inc.
+// SPDX-License-Identifier: Apache-2.0
+
 use prost_build::Config;
 use std::{env, path::PathBuf};
 
@@ -17,12 +20,6 @@ fn main() {
     tonic_build::configure()
         .build_client(true)
         .file_descriptor_set_path(out_dir.join("descriptors.bin"))
-        .compile_protos_with_config(
-            config,
-            &[
-                "protos/firehose.proto",
-            ],
-            &["protos/"],
-        )
+        .compile_protos_with_config(config, &["protos/firehose.proto"], &["protos/"])
         .unwrap();
 }
