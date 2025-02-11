@@ -5,13 +5,34 @@ use std::fmt::Display;
 
 use crate::BlockNumber;
 
-use super::{single_block_request::Reference, Response, SingleBlockRequest};
+use super::{
+    single_block_request::{BlockHashAndNumber, Reference},
+    Response, SingleBlockRequest,
+};
 
 impl SingleBlockRequest {
     /// Create a Firehose [`SingleBlockRequest`] for the given *block number*.
+    ///
+    /// We're leaving this method here for backwards compatibility.
     pub fn new(num: u64) -> SingleBlockRequest {
+        SingleBlockRequest::new_by_block_number(num)
+    }
+
+    /// Create a Firehose [`SingleBlockRequest`] for the given *block number*.
+    pub fn new_by_block_number(num: u64) -> SingleBlockRequest {
         SingleBlockRequest {
             reference: Some(Reference::BlockNumber(BlockNumber { num })),
+            ..Default::default()
+        }
+    }
+
+    /// Create a Firehose [`SingleBlockRequest`] for the given *block hash*.
+    pub fn new_by_block_hash_and_number(hash: String, num: u64) -> SingleBlockRequest {
+        SingleBlockRequest {
+            reference: Some(Reference::BlockHashAndNumber(BlockHashAndNumber {
+                hash,
+                num,
+            })),
             ..Default::default()
         }
     }
