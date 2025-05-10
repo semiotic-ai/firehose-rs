@@ -1,6 +1,6 @@
 [package]
 name = "firehose-rs"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 description = "Firehose client components compiled to Rust"
 authors = ["Joseph Livesey <joseph@semiotic.ai>"]
