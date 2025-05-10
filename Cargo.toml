@@ -2,7 +2,7 @@
 name = "firehose-rs"
 version = "0.1.1"
 edition = "2021"
-description = "Firehose client for Rust"
+description = "Firehose client components compiled to Rust"
 authors = ["Joseph Livesey <joseph@semiotic.ai>"]
 license = "Apache-2.0"
 repository = "https://github.com/semiotic-ai/firehose-rs"
