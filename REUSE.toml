@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2024 Semiotic AI, Inc.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+version = 1
+
+# Package management files
+[[annotations]]
+path = ["Cargo.toml", "Cargo.lock"]
+SPDX-FileCopyrightText = "2024 Semiotic AI, Inc."
+SPDX-License-Identifier = "Apache-2.0"
+
+# Documentation
+[[annotations]]
+path = ["README.md", "CLAUDE.md"]
+SPDX-FileCopyrightText = "2024 Semiotic AI, Inc."
+SPDX-License-Identifier = "Apache-2.0"
+
+# Configuration files
+[[annotations]]
+path = [".gitignore", ".github/**"]
+SPDX-FileCopyrightText = "2024 Semiotic AI, Inc."
+SPDX-License-Identifier = "Apache-2.0"
+
+# Third-party proto files (StreamingFast)
+[[annotations]]
+path = ["protos/LICENSE"]
+SPDX-FileCopyrightText = "StreamingFast"
+SPDX-License-Identifier = "Apache-2.0"
