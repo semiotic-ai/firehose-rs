@@ -52,14 +52,10 @@ impl SingleBlockRequest {
 /// Types implementing this trait must also implement [`Clone`], [`Send`], and
 /// `'static` to ensure compatibility with asynchronous and concurrent contexts.
 ///
-/// # Provided Method
-///
-/// * `number_or_slot`: Returns the block number or slot as a `u64`.
-///
 /// # Example
 ///
-/// ```rust,ignore
-/// use firehose_client::HasNumberOrSlot;
+/// ```rust
+/// use firehose_rs::HasNumberOrSlot;
 ///
 /// #[derive(Clone)]
 /// struct ExecutionBlock {
@@ -99,10 +95,6 @@ impl SingleBlockRequest {
 /// This trait is particularly useful in scenarios where both execution and
 /// consensus layer blocks need to be processed generically, such as in blockchain
 /// indexing or synchronization applications.
-///
-/// [`Clone`]: std::clone::Clone
-/// [`Send`]: std::marker::Send
-///
 pub trait HasNumberOrSlot: Clone + Send + 'static {
     /// Return the block number or slot.
     ///
@@ -113,59 +105,59 @@ pub trait HasNumberOrSlot: Clone + Send + 'static {
 
 /// Convert protocol buffer messages into domain-specific block types.
 ///
-/// This trait is intended to simplify the deserialization and conversion process
-/// when streaming data from a Firehose gRPC service. Implementations of this trait
-/// provide a uniform way to transform a `firehose_protos::Response` message into
-/// a concrete type.
+/// This trait simplifies the deserialization and conversion process when streaming
+/// data from a Firehose gRPC service. Implementations provide a uniform way to
+/// transform a [`Response`] message into a concrete domain type.
 ///
 /// # Example
 ///
-/// ```rust,ignore
-/// use firehose_client::FromResponse;
-/// use firehose_protos::Response;
+/// ```rust
+/// use firehose_rs::{FromResponse, Response};
+/// use std::fmt;
 ///
-/// struct MyBlock;
+/// #[derive(Debug)]
+/// struct MyBlock {
+///     cursor: String,
+/// }
+///
+/// #[derive(Debug)]
+/// struct MyError(String);
+///
+/// impl fmt::Display for MyError {
+///     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+///         write!(f, "{}", self.0)
+///     }
+/// }
 ///
 /// impl FromResponse for MyBlock {
-///     fn from_response(msg: Response) -> Result<Self, ClientError> {
-///         // Perform conversion logic here.
-///         Ok(MyBlock)
+///     type Error = MyError;
+///
+///     fn from_response(msg: Response) -> Result<Self, Self::Error> {
+///         Ok(MyBlock { cursor: msg.cursor })
 ///     }
 /// }
 /// ```
 ///
 /// # Errors
 ///
-/// Implementations should return a `ProtosError` if the conversion fails. This can
+/// Implementations should return an error if the conversion fails. This can
 /// occur due to invalid data, missing fields, or other deserialization issues.
-///
-/// # Usage
-///
-/// The `FromResponse` trait is typically used in conjunction with generic streaming
-/// methods, such as `stream_blocks`, allowing these methods to work with
-/// different block types by specifying the type parameter:
-///
-/// ```rust, ignore
-/// let stream = client
-///     .stream_blocks_generic::<FirehoseBeaconBlock>(start, total)
-///     .await?;
-/// ```
-///
+/// The error type must implement [`Display`](std::fmt::Display) and [`Send`].
 pub trait FromResponse: Sized
 where
     Self::Error: Display + Send,
 {
     type Error;
 
-    /// Convert a `crate::Response` into the implementing type.
+    /// Convert a [`Response`] into the implementing type.
     ///
     /// # Parameters
     ///
-    /// * `msg`: The `Response` message received from the Firehose stream.
+    /// * `msg`: The [`Response`] message received from the Firehose stream.
     ///
     /// # Returns
     ///
-    /// A `Result` containing the converted type on success, or a `ClientError`
+    /// A `Result` containing the converted type on success, or `Self::Error`
     /// if the conversion fails.
     fn from_response(msg: Response) -> Result<Self, Self::Error>;
 }
